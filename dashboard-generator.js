@@ -108,7 +108,7 @@ function constructWidgetDefinition(definition) {
     } else if (key === "markers") {
       result += convertArrayOfObjects(key, value);
     } else if (key === "yaxis") {
-      result += convertMapping(key, value);
+      result += convertMapping(key, value, true);
     } else {
       result += assignmentString(key, value);
     }
@@ -123,7 +123,7 @@ function convertRequests(name, requests) {
 
     Object.entries(request).forEach(([key, value]) => {
       if (key === "style") {
-        result += convertMapping(key, value);
+        result += convertMapping(key, value, true);
       } else if (key === "conditional_formats") {
         result += convertConditionalFormats(key, value);
       } else if (key === "metadata") {
@@ -131,6 +131,19 @@ function convertRequests(name, requests) {
       } else {
         result += assignmentString(key, value);
       }
+    });
+    result += "}\n";
+  }
+  return result;
+}
+
+function convertRequestsStyle(name, style) {
+  let result = "";
+  for (let metadata of metadataArray) {
+    result += name + " {\n";
+
+    Object.entries(metadata).forEach(([key, value]) => {
+      result += assignmentString(key, value);
     });
     result += "}\n";
   }
@@ -152,7 +165,6 @@ function convertRequestsMetadata(name, metadataArray) {
 
 function convertNestedMappings(mappingName, mapping) {
   let result = "";
-
   Object.entries(mapping).forEach(([key, value]) => {
     result += assignmentString(key, value);
   });

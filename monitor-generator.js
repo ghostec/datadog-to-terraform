@@ -41,12 +41,12 @@ export function assignmentString(key, value) {
   return `${key} = ${displayValue}\n`;
 }
 
-export function convertMapping(mappingName, mapping) {
+export function convertMapping(mappingName, mapping, isObject) {
   let result = "\n";
   Object.entries(mapping).forEach(([key, value]) => {
     result += assignmentString(key, value);
   });
-  return `${mappingName} = {${result}}\n`;
+  return `${mappingName}${!isObject ? ' = ' : ' '}{${result}}\n`;
 }
 
 function convertOptions(options) {
